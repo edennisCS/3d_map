@@ -2,7 +2,8 @@
 
 Planets are aligned over the iconic Stonehenge site which has historical associations with planetary alignment. Using the Google Maps 3D JavaScript API, this project blends astronomy and geography, creating an engaging experience for users to explore celestial bodies in a Stonehenge. It flies you through then you can explore around yourself. Showcasing the potential of 3D Maps for immersive storytelling to promote places and curiousity.
 
-![Screenshot 2024-11-17 142623](https://github.com/user-attachments/assets/f1e09b2b-00e5-44e6-8f30-67ad969dad21)
+![Screenshot 2024-11-17 144900](https://github.com/user-attachments/assets/1b0758ea-5172-4c1a-b1f0-b8aea9770b6e)
+
 
 
 ## Historical Significance
