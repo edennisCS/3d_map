@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   <title>3D Maps Planets Stonehenge</title>
+    <style>
+     html,
+     body {
+       height: 100%;
+       margin: 0;
+       padding: 0;
+     }
+   </style>
+   
+  </head>
+  <body>
+    <script async defer>
+      (g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })({
+        key: "<key>",
+        v: "alpha",
+      });
+
+    </script>
+<script>
+    async function init() {
+        // Import necessary elements from the Maps 3D library
+        const { Map3DElement, Model3DElement, Marker3DElement } = await google.maps.importLibrary("maps3d");
+  
+        // Create the 3D map element for the Solar System ending at Stonehenge
+        const mapLocation = new Map3DElement({
+          center: {lat: 51.1805, lng: -1.8240, altitude: 100 }, // Start position
+          tilt: 60, // Initial tilt
+          heading: 230, // Initial heading
+          range: 300,  
+
+        });
+  
+        // Disable default labels
+        mapLocation.defaultLabelsDisabled = true;
+  
+        // Define planets with positions, offsets, and marker
+        const planets = [
+        { name: "Neptune", lat: 51.1805, lng: -1.8240, altitude: 10, modelPath: "./neptune.glb", scale: 0.5, labelOffset: 3 },
+        { name: "Uranus", lat: 51.1803, lng: -1.8244, altitude: 15, modelPath: "./uranus.glb", scale: 4, labelOffset: 3 },
+        { name: "Saturn", lat: 51.1801, lng: -1.8248, altitude: 20, modelPath: "./saturn.glb", scale: 5, labelOffset: 3 },
+        { name: "Jupiter", lat: 51.1799, lng: -1.8252, altitude: 25, modelPath: "./jupiter.glb", scale: 0.04, labelOffset: 4 },
+        { name: "Mars", lat: 51.1797, lng: -1.8256, altitude: 30, modelPath: "./mars.glb", scale: 4, labelOffset: 5 },
+        { name: "Earth", lat: 51.1795, lng: -1.8260, altitude: 35, modelPath: "./earth.glb", scale: 0.001, labelOffset: 6 },
+        { name: "Venus", lat: 51.1793, lng: -1.8264, altitude: 40, modelPath: "./venus.glb", scale: 3, labelOffset: 7 },
+        { name: "Mercury", lat: 51.1792, lng: -1.8266, altitude: 45, modelPath: "./mercury.glb", scale: 0.4, labelOffset: 8 },
+        { name: "Sun", lat: 51.1790, lng: -1.8270, altitude: 60, modelPath: "./sun.glb", scale: 0.6, labelOffset: 10 }
+    ];
+
+  
+        // Add planet models and labels with offsets
+        for (const planet of planets) {
+            // Adjust offsets for specific planets if needed
+            let labelLngOffset = 0; // Default longitude offset
+            let labelLatOffset = 0; // Default latitude offset
+            let labelAltitudeOffset = 6; // Default altitude offset
+
+            // Adjust offsets for specific planets
+            if (planet.name === "Venus") {
+                labelLngOffset = 0.00005;  // Offset longitude for Venus
+                labelLatOffset = 0.00003;  // Offset latitude for Venus
+            } else if (planet.name === "Uranus") {
+                labelLngOffset = 0.00005;  // Offset longitude for Uranus
+                labelLatOffset = 0.00002;  // Offset latitude for Uranus
+            }
+
+            if (planet.name === "Mercury") {
+                labelAltitudeOffset = 3; // Lower label for Mercury
+            } else if (planet.name === "Saturn") {
+                labelAltitudeOffset = 10; // Raise label for Saturn
+            }else if (planet.name === "Sun") {
+                labelAltitudeOffset = 10; // Raise label for Saturn
+            }
+  
+            // Add the 3D model for the planet
+            const model = new Model3DElement({
+                src: planet.modelPath,
+                position: {
+                    lat: planet.lat,
+                    lng: planet.lng,
+                    altitude: planet.altitude,
+                },
+                scale: planet.scale || 1,
+                title: planet.name,
+                altitudeMode: 'RELATIVE_TO_GROUND',
+            });
+  
+            // Append the planet model to the map
+            mapLocation.append(model);
+  
+            // Create a custom marker with label and extruded line
+            const customMarker = new Marker3DElement({
+            position: {
+                lat: planet.lat + labelLatOffset, // Apply latitude offset
+                lng: planet.lng + labelLngOffset, // Apply longitude offset
+                altitude: planet.altitude + labelAltitudeOffset, // Apply altitude offset
+            },
+            label: planet.name, // Text label for the planet
+            extruded: true, // Adds the connecting line
+            altitudeMode: 'RELATIVE_TO_GROUND',
+        });
+  
+            // Create the custom marker image
+            const markerImg = document.createElement('img');
+            markerImg.src = './marker.png'; // Path to the custom marker image
+            markerImg.alt = planet.name; // Accessibility label
+            markerImg.style.width = '24px'; // Adjust the size
+            markerImg.style.height = '24px';
+  
+            // Wrap the image in a template
+            const templateForImg = document.createElement('template');
+            templateForImg.content.append(markerImg);
+  
+            // Append the custom marker image to the marker
+            customMarker.append(templateForImg);
+  
+            // Append the custom marker to the map
+            mapLocation.append(customMarker);
+        }
+  
+        // Append the map to the body
+        document.body.append(mapLocation);
+
+
+      // Define the camera position for the flyover
+      const flyToCamera = {
+          center: { lat: 51.17915, lng: -1.8267,  altitude: 180 }, // Fly to Sun
+            range: 50,          // Zoom range
+            tilt: 70,            // Tilted
+            heading: 230           // Heading aligned with the planetary path
+      };
+  
+      // Perform the flyCameraTo animation
+      mapLocation.flyCameraTo({
+          endCamera: flyToCamera,
+          durationMillis: 15000, // Duration of the fly to camera animation
+      });
+    }
+
+
+    
+
+    // Call the init function to load the map
+    init();
+</script>
+
+  
+
+
+
+
+    </script>
+  </body>
+</html>
