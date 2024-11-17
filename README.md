@@ -1,8 +1,8 @@
-
 # 3D Planets in Stonehenge - Google Maps 3D
 
 Planets are aligned over the iconic Stonehenge site which has historical associations with planetary alignment. Using the Google Maps 3D JavaScript API, this project blends astronomy and geography, creating an engaging experience for users to explore celestial bodies in a Stonehenge. It flies you through then you can explore around yourself. Showcasing the potential of 3D Maps for immersive storytelling to promote places and curiousity.
 
+![Screenshot 2024-11-17 142623](https://github.com/user-attachments/assets/f1e09b2b-00e5-44e6-8f30-67ad969dad21)
 
 
 ## Historical Significance
@@ -50,3 +50,4 @@ Map icon made by Bing Image Designer
 "Sun" (https://skfb.ly/6yGSx) by SebastianSosnowski is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 "Saturn (planet)" (https://skfb.ly/6yw9I) by SebastianSosnowski is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 "Mars" Public Domain Model By Thomas Flynn on SketchFab
+
